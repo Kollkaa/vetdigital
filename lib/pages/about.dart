@@ -11,7 +11,7 @@ class _StateAboutPage extends State<AboutPage>{
   void initState() {
 
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
