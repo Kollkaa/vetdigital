@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vetdigital/pages/about.dart';
+import 'package:vetdigital/pages/about/about.dart';
 
 void main() {
   runApp(MyApp());
