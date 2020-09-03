@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "918963494470",
+    "firebase_url": "https://vetdigital-ce2a3.firebaseio.com",
+    "project_id": "vetdigital-ce2a3",
+    "storage_bucket": "vetdigital-ce2a3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:918963494470:android:e0aaa84d0b954e9bd83447",
+        "android_client_info": {
+          "package_name": "com.example.vetdigital"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "918963494470-34v1g0nnkclbkj9419vrcpga05f11r4l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vetdigital",
+            "certificate_hash": "621b00d5e433e2d6ebdc46febc5a5c4db60227a0"
+          }
+        },
+        {
+          "client_id": "918963494470-dtfjbkv2d1d3a988b027lj3j35le78r5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBk52WrWeVtgfHUfLEZOCxCbNU6bdV4jGA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "918963494470-dtfjbkv2d1d3a988b027lj3j35le78r5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

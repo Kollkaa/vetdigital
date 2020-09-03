@@ -1,6 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:vetdigital/pages/appBar/appBar.dart';
+import 'package:vetdigital/pages/bottonBar/bottonBar.dart';
+import 'package:vetdigital/pages/sign_up/sign_up.dart';
 import 'package:vetdigital/values/colors/main_colors.dart';
 import 'package:vetdigital/values/textStyles/textAboutStyle.dart';
 
@@ -17,9 +19,9 @@ class _StateAboutPage extends State<AboutPage>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:_appBar(),
       body: ListView(
           children: <Widget>[
+            AppBars(),
             Container(
                 padding: EdgeInsets.only(left: 17,right: 17),
                 decoration: BoxDecoration(
@@ -35,17 +37,16 @@ class _StateAboutPage extends State<AboutPage>{
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
+
                     _buildTitle1(),
                     _buildTitle2(),
                     _buildButtonContact(),
                     _buildCards(),
                     _buildBottonCards()
-
-
                   ],
                 )
             ),
-            _buildBottom()
+            BottomBar()
           ],
         ),
       );
@@ -62,6 +63,7 @@ class _StateAboutPage extends State<AboutPage>{
       ),
     );
   }
+
   Widget _buildTitle2(){
     return Container(
       margin: EdgeInsets.only(top: 7,left: 27),
@@ -76,15 +78,17 @@ class _StateAboutPage extends State<AboutPage>{
 
   Widget _buildButtonContact(){
     return Container(
+      width: 161,
+      height: 40,
+
+      decoration: BoxDecoration(
+          color: borderButtons,
+          borderRadius: BorderRadius.all(Radius.circular(10))
+      ),
       margin: EdgeInsets.only(left: 27,top: 22),
       child: GestureDetector(
-        child: Container(
-          width: MediaQuery.of(context).size.width*0.45,
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-              color: cardAboutImageBackColor,
-              borderRadius: BorderRadius.all(Radius.circular(10))
-          ),
+        child: Center(
+
           child: Text("Contact Us",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 13,color: Colors.white),),
@@ -92,6 +96,7 @@ class _StateAboutPage extends State<AboutPage>{
       ),
     );
   }
+
   Widget _buildCards(){
     return Container(
       margin: EdgeInsets.only(top: 38,bottom: 27),
@@ -119,6 +124,7 @@ class _StateAboutPage extends State<AboutPage>{
       ),
     );
   }
+
   Widget _buildBottonCards(){
     return Container(
       height: 84,
@@ -162,7 +168,7 @@ class _StateAboutPage extends State<AboutPage>{
               width: 45,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(10)),
-                border: Border.all(color:cardAboutImageBackColor,width: 2),
+                border: Border.all(color:borderButtons,width: 2),
 
               ),
               child:Center(
@@ -175,21 +181,7 @@ class _StateAboutPage extends State<AboutPage>{
       ),
     );
   }
-  Widget _buildBottom() {
-   return Container(
-       height: 76,
-       color: bottomNavigationColor,
-       child: Row(
-         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-         children: <Widget>[
-           Text("About",style: bottomTextStyle,),
-           Text("© VETDigital 2020",style: bottomTextStyle,),
-           Text("Privacy",style: bottomTextStyle,)
 
-         ],
-       )
-   );
- }
 
   Widget _buildCard(text1,text2,num){
     print(MediaQuery.of(context).size.height.toString());
@@ -220,7 +212,7 @@ class _StateAboutPage extends State<AboutPage>{
                 ),
                 padding: EdgeInsets.all(5),
 
-                child: SvgPicture.asset("assets/images/${num}.svg",color: cardAboutImageBackColor,width: 34,height: 41,),
+                child: SvgPicture.asset("assets/images/${num}.svg",color: borderButtons,width: 34,height: 41,),
               ),
               Container(
                 padding: EdgeInsets.only(left: 5,right: 5),
@@ -248,6 +240,9 @@ class _StateAboutPage extends State<AboutPage>{
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 GestureDetector(
+                  onTap:(){
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SignUp()));
+                  },
                   child: Container(
                     height: 32,
                     width: MediaQuery.of(context).size.width*0.22,
@@ -255,7 +250,7 @@ class _StateAboutPage extends State<AboutPage>{
                       decoration: BoxDecoration(
                           color:cardAboutBackColor,
                           borderRadius: BorderRadius.all(Radius.circular(7)),
-                          border:Border.all(color: Color.fromRGBO(20, 121, 255, 1))
+                          border:Border.all(color: Color.fromRGBO(20, 121, 255, 1),width: 1)
                       ),
                       child: Center(
                         child: Text("Register",style: buttonCardTextStyle,textAlign: TextAlign.center,),
@@ -269,56 +264,6 @@ class _StateAboutPage extends State<AboutPage>{
       ),
     );
 
-  }
-
-
-
-  Widget _appBar(){
-    return PreferredSize(
-      preferredSize: Size.fromHeight(79.0),
-      child:Container(
-          height: 79,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              _phone(),
-              _title(),
-              _menu()
-            ],
-          )
-      ),
-    );
-  }
-
-  Widget _phone(){
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(5)),
-          color: Color.fromRGBO(243, 248, 255,1)
-      ),
-      padding: EdgeInsets.all(13),
-      margin: EdgeInsets.only(top: 17,left: 15,bottom: 16),
-      child: Icon(Icons.phone,color: cardAboutImageBackColor,size: 25,),
-    );
-  }
-
-  Widget _title(){
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text("VET",style: appbarH1TextStyle),
-        Text("Digital",style: appbarH2TextStyle)
-      ],
-    );
-  }
-
-  Widget _menu(){
-    return Container(
-      margin: EdgeInsets.only(top: 27,right: 17,bottom: 27),
-      child: Icon(Icons.menu,color: cardAboutImageBackColor,size: 32,),
-    );
   }
 
 }
