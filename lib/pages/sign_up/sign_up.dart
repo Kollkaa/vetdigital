@@ -16,6 +16,7 @@ class SignUp extends StatefulWidget{
 }
 
 class _StateSignUp extends State<SignUp>{
+
   TextEditingController phoneController=TextEditingController();
 
   TextEditingController fullNameController=TextEditingController();
@@ -37,6 +38,7 @@ class _StateSignUp extends State<SignUp>{
   TextEditingController shopControlle =TextEditingController();
 
   TextEditingController codeController=TextEditingController();
+
 
   File _imageOwner;
 
@@ -67,6 +69,11 @@ class _StateSignUp extends State<SignUp>{
     setState(() {
       print("Profile Picture uploaded");
     });
+  }
+
+  @override
+  void initState() {
+
   }
 
   @override
@@ -259,6 +266,7 @@ class _StateSignUp extends State<SignUp>{
         style: titleH2,
         controller: controller,
         textAlign: TextAlign.left,
+
         keyboardType: num?TextInputType.phone:email?TextInputType.emailAddress:TextInputType.text,
         decoration: InputDecoration(
           border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.transparent)),
@@ -446,6 +454,23 @@ class _StateSignUp extends State<SignUp>{
     return Center(
       child: GestureDetector(
         onTap: (){
+          valuesCorrect()?
+          showDialog(
+              context: context,
+              child: Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    color: cardAboutBackColor
+                  ),
+                  height: 100,
+                  width: 200,
+                  child: FlatButton(
+                    child: Text("Not all fields are filled !!!",style: titleH1,),
+                  ),
+                ),
+              )
+          ):
           showDialog(
             context: context,
             builder: (BuildContext context) => _buildAboutDialog(context),
@@ -507,6 +532,30 @@ class _StateSignUp extends State<SignUp>{
         ],
     );
   }
+
+  submitedCode(){
+
+  }
+
+  valuesCorrect(){
+    if(
+    phoneController.text!=null||phoneController.text!=""||
+        fullNameController.text!=null||fullNameController.text!=""||
+        emailController.text!=null||emailController.text!=""||
+        cityController.text!=null||cityController.text!=""||
+        petNameController.text!=null||petNameController.text!=""||
+        petTypeController.text!=null||petTypeController.text!=""||
+        petSubTypeController.text!=null||petSubTypeController.text!=""||
+        medicalHistoryController.text!=null||medicalHistoryController.text!=""||
+        birthYearController.text!=null||birthYearController.text!=""||
+        shopControlle.text!=null||shopControlle.text!=""||
+        codeController.text!=null||codeController.text!=""
+    )
+    {
+      return true;
+    }
+  }
+
 
 
 
