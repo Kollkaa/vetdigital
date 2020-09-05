@@ -15,11 +15,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "918963494470-34v1g0nnkclbkj9419vrcpga05f11r4l.apps.googleusercontent.com",
+          "client_id": "918963494470-bc3s69h0up5slj96he043ke8e6phdmpt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.vetdigital",
-            "certificate_hash": "621b00d5e433e2d6ebdc46febc5a5c4db60227a0"
+            "certificate_hash": "eed9742ce73265e161bcfa74c66a4d4ce7eaa8a1"
+          }
+        },
+        {
+          "client_id": "918963494470-qc332464lv03moge0uubhcki17nv1pij.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vetdigital",
+            "certificate_hash": "075f3e5393abd3d23a49f1e41a97d54468a473d7"
           }
         },
         {

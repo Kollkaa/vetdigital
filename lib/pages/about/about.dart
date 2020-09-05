@@ -147,9 +147,9 @@ class _StateAboutPage extends State<AboutPage>{
               color: cardAboutImageColor,
 
             ),
-            padding: EdgeInsets.all(8),
+            padding: EdgeInsets.all(10),
             margin: EdgeInsets.only(top: 5,left: 5,bottom: 4),
-            child: SvgPicture.asset("assets/images/third.svg",color: Colors.blue,width: 31,height: 38,),
+            child: Image.asset("assets/images/third.png",color: Colors.blue),
           ),
           Container(
             margin: EdgeInsets.only(top: 2),
@@ -210,9 +210,9 @@ class _StateAboutPage extends State<AboutPage>{
                   borderRadius: BorderRadius.all(Radius.circular(7)),
                   color: cardAboutImageColor,
                 ),
-                padding: EdgeInsets.all(5),
+                padding: EdgeInsets.all(10),
 
-                child: SvgPicture.asset("assets/images/${num}.svg",color: borderButtons,width: 34,height: 41,),
+                child: Image.asset("assets/images/${num}.png",color: borderButtons),
               ),
               Container(
                 padding: EdgeInsets.only(left: 5,right: 5),

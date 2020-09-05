@@ -1,13 +1,18 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:global_state/global_state.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vetdigital/entries/User.dart';
 import 'package:vetdigital/pages/appBar/appBar.dart';
 import 'package:vetdigital/pages/bottonBar/bottonBar.dart';
+import 'package:vetdigital/services/authFirebase.dart';
 import 'package:vetdigital/values/colors/main_colors.dart';
 import 'package:vetdigital/values/textStyles/textSignUpStyle.dart';
 
@@ -35,14 +40,27 @@ class _StateSignUp extends State<SignUp>{
 
   TextEditingController birthYearController =TextEditingController();
 
-  TextEditingController shopControlle =TextEditingController();
+  TextEditingController shopController =TextEditingController();
 
   TextEditingController codeController=TextEditingController();
+
+  static FirebaseAuth auth = FirebaseAuth.instance;
 
 
   File _imageOwner;
 
   File _imagePet;
+
+  SharedPreferences prefs;
+
+
+  @override
+  void initState() {
+    initPrefs();
+  }
+  initPrefs() async{
+    prefs=await SharedPreferences.getInstance();
+  }
 
   Future getImageOwner() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -61,20 +79,10 @@ class _StateSignUp extends State<SignUp>{
     });
   }
 
-  Future uploadPic(BuildContext context,_image) async{
-    String fileName = basename(_image.path);
-    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(fileName);
-    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_image);
-    StorageTaskSnapshot taskSnapshot=await uploadTask.onComplete;
-    setState(() {
-      print("Profile Picture uploaded");
-    });
-  }
 
-  @override
-  void initState() {
 
-  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -119,7 +127,7 @@ class _StateSignUp extends State<SignUp>{
               color: cardAboutImageColor,
               borderRadius: BorderRadius.all(Radius.circular(10))
             ),
-            child: SvgPicture.asset("assets/images/one.svg",color:borderButtons,width:40,height:42 )
+            child: Image.asset("assets/images/one.png",color:borderButtons,width: 40,height: 42,fit: BoxFit.contain )
             ,
           ),
           Container(
@@ -179,7 +187,7 @@ class _StateSignUp extends State<SignUp>{
                   child: (_imageOwner!=null)?Image.file(
                     _imageOwner,
                     fit: BoxFit.fill,
-                  ):SvgPicture.asset("assets/images/one.svg",color:borderButtons)
+                  ):Image.asset("assets/images/one.png",color:borderButtons,width: 44,height: 46,fit:BoxFit.contain )
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 16),
@@ -266,7 +274,18 @@ class _StateSignUp extends State<SignUp>{
         style: titleH2,
         controller: controller,
         textAlign: TextAlign.left,
+        onChanged: (text){
+          bool validateMobile(String value) {
+            if (value.length != 10)
+              return false;
+            else
+              return true;
+          }
 
+          if(controller==phoneController){
+            validateMobile(text);
+          }
+        },
         keyboardType: num?TextInputType.phone:email?TextInputType.emailAddress:TextInputType.text,
         decoration: InputDecoration(
           border: OutlineInputBorder(borderSide: BorderSide(width: 1, color: Colors.transparent)),
@@ -332,12 +351,13 @@ class _StateSignUp extends State<SignUp>{
             width: MediaQuery.of(context).size.width-60,
             height: 86,
             margin: EdgeInsets.only(bottom: 20),
+
             child:  Row(
               children: <Widget>[
                 Container(
                   height: 86,
                   width: 86,
-                  padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
                       color: cardAboutImageColor,
                       borderRadius: BorderRadius.all(Radius.circular(10))
@@ -345,7 +365,7 @@ class _StateSignUp extends State<SignUp>{
                   child: (_imagePet!=null)?Image.file(
                     _imagePet,
                     fit: BoxFit.fill,
-                  ):SvgPicture.asset("assets/images/one.svg",color:borderButtons )
+                  ):Image.asset("assets/images/one.png",color:borderButtons,width: 44,height: 46,fit:BoxFit.contain )
 
                 ),
                 Container(
@@ -425,7 +445,7 @@ class _StateSignUp extends State<SignUp>{
               style: titleH1,
             ),
           ),
-          _buildTextFiled("Shop Name ( dropdown )", shopControlle, 1,false,false,context),
+          _buildTextFiled("Shop Name ( dropdown )", shopController, 1,false,false,context),
           Container(
             height: 50,
             width: MediaQuery.of(context).size.width-60,
@@ -454,7 +474,7 @@ class _StateSignUp extends State<SignUp>{
     return Center(
       child: GestureDetector(
         onTap: (){
-          valuesCorrect()?
+          valuesCorrect(context)?null:
           showDialog(
               context: context,
               child: Center(
@@ -466,14 +486,10 @@ class _StateSignUp extends State<SignUp>{
                   height: 100,
                   width: 200,
                   child: FlatButton(
-                    child: Text("Not all fields are filled !!!",style: titleH1,),
+                    child: Text("All fields are not filled !!!",style: titleH1,),
                   ),
                 ),
               )
-          ):
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => _buildAboutDialog(context),
           );
         },
         child: Container(
@@ -500,61 +516,47 @@ class _StateSignUp extends State<SignUp>{
       ),
     );
   }
-  Widget _buildAboutDialog(BuildContext context) {
-    return new AlertDialog(
-        title: const Text('Code verify', style: titleH2,),
-        content: new Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text("Verify code had been sent on your phone",style: titleH2,),
-                  Text("Please write your code !",style: titleH2,),
-                ],
-              ),
-            ),
-            _buildTextFiled("Verify code", codeController, 1,true,false,context)
-          ],
-        ),
-        actions: <Widget>[
-          new FlatButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              uploadPic(context,_imageOwner);
-              },
-            textColor: Theme.of(context).primaryColor,
-            child: const Text('Submit',style: titleH2),
-          ),
-        ],
-    );
-  }
 
   submitedCode(){
 
   }
 
-  valuesCorrect(){
+  valuesCorrect(context){
     if(
-    phoneController.text!=null||phoneController.text!=""||
-        fullNameController.text!=null||fullNameController.text!=""||
-        emailController.text!=null||emailController.text!=""||
-        cityController.text!=null||cityController.text!=""||
-        petNameController.text!=null||petNameController.text!=""||
-        petTypeController.text!=null||petTypeController.text!=""||
-        petSubTypeController.text!=null||petSubTypeController.text!=""||
-        medicalHistoryController.text!=null||medicalHistoryController.text!=""||
-        birthYearController.text!=null||birthYearController.text!=""||
-        shopControlle.text!=null||shopControlle.text!=""||
-        codeController.text!=null||codeController.text!=""
+    phoneController.text==null||phoneController.text==""||
+        fullNameController.text==null||fullNameController.text==""||
+        emailController.text==null||emailController.text==""||
+        cityController.text==null||cityController.text==""||
+        petNameController.text==null||petNameController.text==""||
+        petTypeController.text==null||petTypeController.text==""||
+        petSubTypeController.text==null||petSubTypeController.text==""||
+        medicalHistoryController.text==null||medicalHistoryController.text!=""||
+        birthYearController.text==null||birthYearController.text==""||
+        shopController.text==null||shopController.text==""
     )
     {
-      return true;
+      var user=new UserFirebase("uid", fullNameController.text,
+          phoneController.text, emailController.text,
+          cityController.text, petNameController.text,
+          petTypeController.text, petSubTypeController.text,
+          int.parse(birthYearController.text), medicalHistoryController.text,
+          shopController.text
+      );
+      store["user"]=user;
+      print("aaa");
+      bool val =true;
+      AuthFirebase().loginUser(phoneController.text, context,_imageOwner,_imagePet);
+      return val;
+    }
+    else {
+    Scaffold.of (context)
+    .showSnackBar(SnackBar(content: Text('Processing Data')));
+    return false;
     }
   }
+
+
+
 
 
 
