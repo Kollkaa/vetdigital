@@ -215,8 +215,8 @@ class _StateAboutPage extends State<AboutPage>{
                 child: Image.asset("assets/images/${num}.png",color: borderButtons),
               ),
               Container(
-                padding: EdgeInsets.only(left: 5,right: 5),
-                margin: EdgeInsets.only(top:21),
+                padding: EdgeInsets.only(left: 5,right: 5 ),
+                margin: EdgeInsets.only(top:11),
                 width: MediaQuery.of(context).size.width*0.25,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,

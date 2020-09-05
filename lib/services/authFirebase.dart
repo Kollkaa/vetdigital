@@ -22,16 +22,7 @@ class AuthFirebase {
         phoneNumber: phone,
         timeout: Duration(seconds: 60),
         verificationCompleted: (AuthCredential credential) async{
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context)
-              {
-                return AlertDialog(
-                  title: Text("?verificationCompleted:"),
-                );
-              }
-          );
+
 
           Navigator.of(context).pop();
 
@@ -51,16 +42,7 @@ class AuthFirebase {
         },
         verificationFailed: (var exception){
           print(exception);
-          showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (context)
-              {
-                return AlertDialog(
-                  title: Text("verificationFailed:"+ exception.toString()),
-                );
-              }
-              );
+
         },
         codeSent: (String verificationId, [int forceResendingToken]){
           showDialog(
