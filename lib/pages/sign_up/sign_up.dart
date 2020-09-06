@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetdigital/entries/User.dart';
 import 'package:vetdigital/pages/appBar/appBar.dart';
 import 'package:vetdigital/pages/bottonBar/bottonBar.dart';
-import 'package:vetdigital/services/authFirebase.dart';
+import 'file:///C:/Users/kolia/StudioProjects/vetdigital/lib/services/auth/authFirebase.dart';
 import 'package:vetdigital/values/colors/main_colors.dart';
 import 'package:vetdigital/values/textStyles/textSignUpStyle.dart';
 

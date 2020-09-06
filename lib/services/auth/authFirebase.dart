@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,17 +6,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_verification_code_input/flutter_verification_code_input.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vetdigital/entries/User.dart';
-import 'package:vetdigital/pages/auth/HomeScreen.dart';
 import 'package:global_state/global_state.dart';
 import 'package:path/path.dart';
+import 'package:vetdigital/pages/home/HomeScreen.dart';
 class AuthFirebase {
   final _codeController = TextEditingController();
   FirebaseAuth _auth = FirebaseAuth.instance;
   var db = Firestore.instance;
 
   String code;
-
+  initPrefs(UserFirebase userFirebase)async{
+    SharedPreferences.getInstance().then((value) => value.setString("user", json.encode(userFirebase.toJson())));
+  }
 
   Future<bool> loginUser(String phone, BuildContext context,imageOwner,imagePet) async{
     _auth.verifyPhoneNumber(
@@ -26,14 +30,14 @@ class AuthFirebase {
 
           Navigator.of(context).pop();
 
-          var result = await _auth.signInWithCredential(credential);
+          UserCredential result = await _auth.signInWithCredential(credential);
 
-          FirebaseUser user = result.user;
+          User user = result.user;
 
           if(user != null){
-            Navigator.push(context, MaterialPageRoute(
+            Timer(Duration(seconds: 1), () => Navigator.push(context, MaterialPageRoute(
                 builder: (context) => HomeScreen()
-            ));
+            )));
           }else{
             print("Error");
           }
@@ -78,15 +82,13 @@ class AuthFirebase {
                           us.uid=user.uid;
                           uploadPicOwner(imageOwner).then((value) => us.ownerImage=store['url_owner']);
                           uploadPicPet(imagePet).then((value) => us.petImage=store['url_pet']);
-
-
-
                           store["user"]=us;
+                          initPrefs(us);
                           getData(user.uid).then((value) {
                             store["user_uid"]= user.uid;
-                            Navigator.push(context, MaterialPageRoute(
+                            Timer(Duration(seconds: 1), () => Navigator.push(context, MaterialPageRoute(
                                   builder: (context) => HomeScreen()
-                              ));});
+                              )));});
                           print(store["user_uid"]);
                         }else{
                           print("Error");

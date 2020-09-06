@@ -8,14 +8,12 @@ import 'package:vetdigital/values/textStyles/textAboutStyle.dart';
 
 class AboutPage extends StatefulWidget{
 
-  _StateAboutPage createState()=>_StateAboutPage();
+   _StateAboutPage createState()=>_StateAboutPage();
 }
 class _StateAboutPage extends State<AboutPage>{
-  @override
-  void initState() {
 
-  }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
